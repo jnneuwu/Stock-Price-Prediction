@@ -1,0 +1,63 @@
+<mxfile host="app.diagrams.net" version="22.0.0">
+  <diagram name="Feature Engineering" id="feat">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" pageWidth="1169" pageHeight="600">
+      <root>
+        <mxCell id="0" /><mxCell id="1" parent="0" />
+        <mxCell id="t" value="Fig 3.2  Feature Engineering Pipeline" style="text;html=1;align=center;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="300" y="10" width="500" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="raw" value="Raw Daily Data&#10;(Date, Open, High, Low, Close, Volume)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#F57F17;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="grp" value="Feature Computation (per stock)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#666666;dashed=1;fontSize=12;fontStyle=1;verticalAlign=top" vertex="1" parent="1">
+          <mxGeometry x="300" y="60" width="620" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" value="close_norm (idx 0)&#10;↑ prediction target" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="320" y="100" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" value="volume_norm (idx 1)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFECB3;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="480" y="100" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" value="sma_7_norm (idx 2)&#10;7-day simple avg" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFECB3;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="640" y="100" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" value="sma_20_norm (idx 3)&#10;20-day simple avg" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFECB3;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="320" y="170" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="f5" value="ema_12_norm (idx 4)&#10;12-day exp. avg" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFECB3;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="480" y="170" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="f6" value="ema_26_norm (idx 5)&#10;26-day exp. avg" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFECB3;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="640" y="170" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="f7" value="macd_norm (idx 6)&#10;EMA12 - EMA26" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#B3E5FC;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="320" y="240" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="f8" value="rsi_norm (idx 7)&#10;momentum 0-100" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#B3E5FC;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="480" y="240" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="f9" value="daily_return_norm (idx 8)&#10;% change" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#B3E5FC;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="640" y="240" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="f10" value="volatility_7_norm (idx 9)&#10;7-day std of returns" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCDD2;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="480" y="310" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="norm" value="Min-Max Normalization&#10;per stock: x_norm = (x - min) / (max - min)&#10;→ all values in [0, 1]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#6A1B9A;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="40" y="200" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="out" value="Output Matrix&#10;shape: (num_days, 10)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFAB91;strokeColor=#D84315;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="960" y="200" width="170" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" style="endArrow=classicThin" edge="1" parent="1" source="raw" target="grp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="endArrow=classicThin" edge="1" parent="1" source="raw" target="norm">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="endArrow=classicThin" edge="1" parent="1" source="grp" target="out">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

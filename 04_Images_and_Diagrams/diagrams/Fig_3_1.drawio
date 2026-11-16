@@ -1,0 +1,103 @@
+<mxfile host="app.diagrams.net" modified="2026-04-22T00:00:00.000Z" agent="Mozilla/5.0" version="22.0.0" type="device">
+  <diagram name="System Architecture" id="arch">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Fig 3.1  Overall System Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="360" y="20" width="450" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L1" value="1. Data Layer" style="text;html=1;align=center;fontStyle=1;fontSize=12;fillColor=#E1F5FE;strokeColor=#0288D1" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yfinance" value="Yahoo Finance&#10;(yfinance)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#F57F17;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="40" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="raw" value="10 Stocks × 5 Years&#10;Daily OHLCV" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#F57F17;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="40" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="L2" value="2. Preprocessing" style="text;html=1;align=center;fontStyle=1;fontSize=12;fillColor=#FFF3E0;strokeColor=#EF6C00" vertex="1" parent="1">
+          <mxGeometry x="200" y="80" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="features" value="Feature Engineering&#10;(10 features)&#10;close, volume, SMA, EMA,&#10;MACD, RSI, return, volatility" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#EF6C00;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="200" y="130" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="norm" value="Min-Max Normalization&#10;→ [0, 1]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#EF6C00;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="200" y="230" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="window" value="Sliding Window&#10;(20 days × 10 features)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#EF6C00;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="200" y="300" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="L3" value="3. Model Training" style="text;html=1;align=center;fontStyle=1;fontSize=12;fillColor=#E8F5E9;strokeColor=#2E7D32" vertex="1" parent="1">
+          <mxGeometry x="400" y="80" width="300" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="lstm" value="LSTM&#10;(PyTorch)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#2E7D32;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="400" y="130" width="90" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="rnn" value="RNN&#10;(PyTorch)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#2E7D32;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="505" y="130" width="90" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="gru" value="GRU&#10;(PyTorch)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#2E7D32;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="610" y="130" width="90" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cnn" value="1D-CNN&#10;(PyTorch)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#2E7D32;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="400" y="200" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="rf" value="Random Forest&#10;(scikit-learn)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#2E7D32;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="560" y="200" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="protocol" value="Training Protocol:&#10;• Adam, lr=0.0005&#10;• Batch=64, Epochs≤150&#10;• Early stopping (patience=20)&#10;• Gradient clipping (norm=1.0)&#10;• ReduceLROnPlateau&#10;• 3 runs, keep best" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F1F8E9;strokeColor=#558B2F;align=left;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="400" y="270" width="300" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="L4" value="4. Storage" style="text;html=1;align=center;fontStyle=1;fontSize=12;fillColor=#F3E5F5;strokeColor=#6A1B9A" vertex="1" parent="1">
+          <mxGeometry x="740" y="80" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mysql" value="MySQL&#10;• model_predictions&#10;• model_forecasts" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#E1BEE7;strokeColor=#6A1B9A;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="740" y="130" width="120" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="json" value="JSON Files&#10;• model_results.json&#10;• loss_history.json" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#6A1B9A;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="740" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pth" value="Model Files&#10;.pth / .pkl" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#6A1B9A;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="740" y="320" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="L5" value="5. Presentation" style="text;html=1;align=center;fontStyle=1;fontSize=12;fillColor=#FCE4EC;strokeColor=#AD1457" vertex="1" parent="1">
+          <mxGeometry x="900" y="80" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="flask" value="Flask REST API&#10;(app.py)&#10;/api/predictions&#10;/api/forecast&#10;/api/loss_history&#10;/api/model_results" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8BBD0;strokeColor=#AD1457;align=left;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="900" y="130" width="140" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="web" value="Web Front-End&#10;HTML + ECharts&#10;• Prediction curves&#10;• Loss curves&#10;• RMSE bar chart&#10;• 5-day forecast" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8BBD0;strokeColor=#AD1457;align=left;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="900" y="260" width="140" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classicThin;endFill=1" edge="1" parent="1" source="yfinance" target="raw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classicThin;endFill=1" edge="1" parent="1" source="raw" target="features">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classicThin;endFill=1" edge="1" parent="1" source="features" target="norm">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classicThin;endFill=1" edge="1" parent="1" source="norm" target="window">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classicThin;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="window" target="lstm">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classicThin;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="protocol" target="mysql">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classicThin;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="mysql" target="flask">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classicThin;endFill=1" edge="1" parent="1" source="flask" target="web">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classicThin;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;dashed=1" edge="1" parent="1" source="json" target="flask">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

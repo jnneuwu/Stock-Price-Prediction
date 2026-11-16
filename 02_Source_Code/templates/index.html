@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Price Prediction Platform</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f7fa; color: #333; }
+        .header { background: linear-gradient(135deg, #1a237e, #0d47a1); color: white; padding: 20px 40px; }
+        .header h1 { font-size: 24px; }
+        .header p { font-size: 14px; opacity: 0.8; margin-top: 5px; }
+        .controls { padding: 20px 40px; background: white; border-bottom: 1px solid #e0e0e0; display: flex; gap: 15px; align-items: center; }
+        .controls select { padding: 8px 15px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; }
+        .controls button { padding: 8px 20px; font-size: 14px; border: none; border-radius: 5px; cursor: pointer; color: white; background: #1a237e; }
+        .controls button:hover { background: #0d47a1; }
+        .controls button.active { background: #0d47a1; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .dashboard { padding: 20px 40px; }
+        .chart-row { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+        .chart-box { background: white; border-radius: 10px; padding: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); flex: 1; min-width: 400px; margin-bottom: 20px; }
+        .chart-box h3 { font-size: 16px; color: #1a237e; margin-bottom: 10px; }
+        .chart { width: 100%; height: 400px; }
+        .chart-full { width: 100%; height: 500px; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .metric-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); text-align: center; }
+        .metric-card .value { font-size: 28px; font-weight: bold; color: #1a237e; }
+        .metric-card .label { font-size: 13px; color: #888; margin-top: 5px; }
+        .comparison-table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        .comparison-table th { background: #1a237e; color: white; padding: 12px 15px; font-size: 14px; text-align: center; }
+        .comparison-table td { padding: 10px 15px; text-align: center; border-bottom: 1px solid #eee; font-size: 13px; }
+        .comparison-table tr:hover { background: #f5f7fa; }
+        .winner { color: #1a237e; font-weight: bold; }
+        .section-title { font-size: 20px; color: #1a237e; margin: 25px 0 15px 0; padding-bottom: 8px; border-bottom: 2px solid #1a237e; }
+        #loading { text-align: center; padding: 40px; color: #888; font-size: 16px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Stock Price Analysis & Prediction Platform</h1>
+    <p>Deep Learning-Based Stock Prediction using LSTM, RNN, GRU, CNN, and Random Forest</p>
+</div>
+
+<div class="controls">
+    <select id="tickerSelect"></select>
+    <button id="btnPrice" class="active" onclick="showSection('price')">Price Chart</button>
+    <button id="btnIndicator" onclick="showSection('indicator')">Technical Indicators</button>
+    <button id="btnPrediction" onclick="showSection('prediction')">Prediction Comparison</button>
+    <button id="btnEvaluation" onclick="showSection('evaluation')">Model Evaluation</button>
+</div>
+
+<div class="dashboard">
+    <div id="loading">Loading data...</div>
+
+    <!-- Price Section -->
+    <div id="section-price" style="display:none;">
+        <div class="chart-box">
+            <h3 id="priceTitle">Stock Price Chart</h3>
+            <div id="priceChart" class="chart-full"></div>
+        </div>
+    </div>
+
+    <!-- Indicator Section -->
+    <div id="section-indicator" style="display:none;">
+        <div class="chart-row">
+            <div class="chart-box"><h3>SMA & EMA</h3><div id="smaChart" class="chart"></div></div>
+            <div class="chart-box"><h3>MACD</h3><div id="macdChart" class="chart"></div></div>
+        </div>
+        <div class="chart-row">
+            <div class="chart-box"><h3>RSI (Relative Strength Index)</h3><div id="rsiChart" class="chart"></div></div>
+            <div class="chart-box"><h3>Volume</h3><div id="volumeChart" class="chart"></div></div>
+        </div>
+    </div>
+
+    <!-- Prediction Section -->
+    <div id="section-prediction" style="display:none;">
+        <!-- Average Performance -->
+        <div class="chart-box">
+            <h3 id="latestTitle">Average Prediction Performance</h3>
+            <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:15px;">
+                <div class="metric-card" style="flex:1; min-width:150px; border-left:4px solid #000;">
+                    <div class="value" id="actualVal">-</div>
+                    <div class="label" id="actualLabel">Total Test Days</div>
+                    <div class="label" id="predDate">-</div>
+                </div>
+                <div class="metric-card" style="flex:1; min-width:150px; border-left:4px solid #2196F3;">
+                    <div class="value" style="color:#2196F3;" id="lstmVal">-</div>
+                    <div class="label">LSTM Average MAE</div>
+                    <div class="label" id="lstmErr">-</div>
+                </div>
+                <div class="metric-card" style="flex:1; min-width:150px; border-left:4px solid #F44336;">
+                    <div class="value" style="color:#F44336;" id="rnnVal">-</div>
+                    <div class="label">RNN Average MAE</div>
+                    <div class="label" id="rnnErr">-</div>
+                </div>
+                <div class="metric-card" style="flex:1; min-width:150px; border-left:4px solid #9C27B0;">
+                    <div class="value" style="color:#9C27B0;" id="gruVal">-</div>
+                    <div class="label">GRU Average MAE</div>
+                    <div class="label" id="gruErr">-</div>
+                </div>
+                <div class="metric-card" style="flex:1; min-width:150px; border-left:4px solid #FF5722;">
+                    <div class="value" style="color:#FF5722;" id="cnnVal">-</div>
+                    <div class="label">CNN Average MAE</div>
+                    <div class="label" id="cnnErr">-</div>
+                </div>
+                <div class="metric-card" style="flex:1; min-width:150px; border-left:4px solid #4CAF50;">
+                    <div class="value" style="color:#4CAF50;" id="rfVal">-</div>
+                    <div class="label">RF Average MAE</div>
+                    <div class="label" id="rfErr">-</div>
+                </div>
+            </div>
+            <div id="latestBarChart" style="width:100%; height:300px; margin-top:15px;"></div>
+        </div>
+
+        <!-- 5-Day Future Forecast -->
+        <div class="chart-box">
+            <h3 id="forecastTitle">5-Day Future Forecast</h3>
+            <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:15px;">
+                <div style="flex:2; min-width:400px;">
+                    <div id="forecastChart" style="width:100%; height:350px;"></div>
+                </div>
+                <div style="flex:1; min-width:250px;">
+                    <div id="forecastTable"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Prediction History -->
+        <div class="chart-box">
+            <h3 id="predTitle">Full Test Period - Prediction vs Actual</h3>
+            <div id="predChart" class="chart-full"></div>
+        </div>
+    </div>
+
+    <!-- Evaluation Section -->
+    <div id="section-evaluation" style="display:none;">
+        <div class="metrics-grid" id="metricsGrid"></div>
+        <h3 class="section-title">Training & Validation Loss Curves</h3>
+        <div class="chart-row">
+            <div class="chart-box"><h3>LSTM Loss</h3><div id="lossLstmChart" class="chart"></div></div>
+            <div class="chart-box"><h3>RNN Loss</h3><div id="lossRnnChart" class="chart"></div></div>
+        </div>
+        <div class="chart-row">
+            <div class="chart-box"><h3>GRU Loss</h3><div id="lossGruChart" class="chart"></div></div>
+            <div class="chart-box"><h3>CNN Loss</h3><div id="lossCnnChart" class="chart"></div></div>
+        </div>
+        <div class="chart-box">
+            <h3>RMSE Comparison by Stock</h3>
+            <div id="rmseChart" class="chart-full"></div>
+        </div>
+        <h3 class="section-title">Per-Stock Model Comparison</h3>
+        <table class="comparison-table" id="comparisonTable"></table>
+    </div>
+</div>
+
+<script>
+// Front-end state. Refreshed every time the user picks a different ticker.
+let currentTicker = '';
+let stockData     = [];   // raw OHLCV + 9 indicators for the current ticker
+let predData      = [];   // held-out actual vs 5-model predictions
+let forecastData  = [];   // 5-day recursive forecast
+let modelResults  = [];   // RMSE / MAE table (all tickers, all models)
+let lossHistory   = {};   // per-epoch loss curves used on the Evaluation tab
+
+// Page boot: populate the ticker dropdown, load the result tables once,
+// then load the first ticker's charts.
+async function init() {
+    const res = await fetch('/api/tickers');
+    const tickers = await res.json();
+    const select = document.getElementById('tickerSelect');
+    tickers.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t; opt.textContent = t;
+        select.appendChild(opt);
+    });
+    const [mRes, lRes] = await Promise.all([
+        fetch('/api/model_results'),
+        fetch('/api/loss_history')
+    ]);
+    modelResults = await mRes.json();
+    lossHistory = await lRes.json();
+    select.addEventListener('change', () => loadStock(select.value));
+    loadStock(tickers[0]);
+}
+
+async function loadStock(ticker) {
+    currentTicker = ticker;
+    document.getElementById('loading').style.display = 'block';
+    const [sRes, pRes, fRes] = await Promise.all([
+        fetch('/api/stock/' + ticker),
+        fetch('/api/predictions/' + ticker),
+        fetch('/api/forecast/' + ticker)
+    ]);
+    stockData = await sRes.json();
+    predData = await pRes.json();
+    forecastData = await fRes.json();
+    document.getElementById('loading').style.display = 'none';
+    showSection(getCurrentSection());
+}
+
+function getCurrentSection() {
+    const btns = ['price', 'indicator', 'prediction', 'evaluation'];
+    for (let b of btns) {
+        if (document.getElementById('btn' + b.charAt(0).toUpperCase() + b.slice(1)).classList.contains('active')) return b;
+    }
+    return 'price';
+}
+
+function showSection(name) {
+    ['price', 'indicator', 'prediction', 'evaluation'].forEach(s => {
+        document.getElementById('section-' + s).style.display = s === name ? 'block' : 'none';
+        const btn = document.getElementById('btn' + s.charAt(0).toUpperCase() + s.slice(1));
+        btn.classList.toggle('active', s === name);
+    });
+    if (name === 'price') renderPrice();
+    else if (name === 'indicator') renderIndicators();
+    else if (name === 'prediction') renderPrediction();
+    else if (name === 'evaluation') renderEvaluation();
+}
+
+// ===== TAB 1: Price Chart =====
+// Close price line with SMA 20 overlay. Range slider lets you zoom.
+function renderPrice() {
+    document.getElementById('priceTitle').textContent = currentTicker + ' - Stock Price';
+    const dates = stockData.map(d => d.date);
+    const chart = echarts.init(document.getElementById('priceChart'));
+    chart.setOption({
+        tooltip: { trigger: 'axis' },
+        legend: { data: ['Close', 'SMA 20'] },
+        xAxis: { type: 'category', data: dates },
+        yAxis: { type: 'value', scale: true },
+        dataZoom: [{ type: 'slider', start: 0, end: 100 }],
+        series: [
+            { name: 'Close', type: 'line', data: stockData.map(d => d.close), lineStyle: { width: 1.5 }, showSymbol: false },
+            { name: 'SMA 20', type: 'line', data: stockData.map(d => d.sma_20), lineStyle: { width: 1, type: 'dashed' }, showSymbol: false }
+        ]
+    });
+}
+
+// ===== TAB 2: Technical Indicators =====
+// 4 small charts in a 2x2 grid: SMA/EMA, MACD, RSI, Volume.
+// Same data as the price tab, just sliced into the 4 derived indicators.
+function renderIndicators() {
+    const dates = stockData.map(d => d.date);
+    const smaChart = echarts.init(document.getElementById('smaChart'));
+    smaChart.setOption({
+        tooltip: { trigger: 'axis' }, legend: { data: ['Close', 'SMA 7', 'SMA 20', 'EMA 12', 'EMA 26'] },
+        xAxis: { type: 'category', data: dates }, yAxis: { type: 'value', scale: true },
+        dataZoom: [{ type: 'slider' }],
+        series: [
+            { name: 'Close', type: 'line', data: stockData.map(d => d.close), showSymbol: false, lineStyle: { width: 2 } },
+            { name: 'SMA 7', type: 'line', data: stockData.map(d => d.sma_7), showSymbol: false, lineStyle: { type: 'dashed' } },
+            { name: 'SMA 20', type: 'line', data: stockData.map(d => d.sma_20), showSymbol: false, lineStyle: { type: 'dashed' } },
+            { name: 'EMA 12', type: 'line', data: stockData.map(d => d.ema_12), showSymbol: false },
+            { name: 'EMA 26', type: 'line', data: stockData.map(d => d.ema_26), showSymbol: false }
+        ]
+    });
+    const macdChart = echarts.init(document.getElementById('macdChart'));
+    macdChart.setOption({
+        tooltip: { trigger: 'axis' },
+        xAxis: { type: 'category', data: dates }, yAxis: { type: 'value' },
+        dataZoom: [{ type: 'slider' }],
+        series: [{ name: 'MACD', type: 'bar', data: stockData.map(d => ({ value: d.macd, itemStyle: { color: d.macd >= 0 ? '#e53935' : '#43a047' } })) }]
+    });
+    const rsiChart = echarts.init(document.getElementById('rsiChart'));
+    rsiChart.setOption({
+        tooltip: { trigger: 'axis' },
+        xAxis: { type: 'category', data: dates }, yAxis: { type: 'value', min: 0, max: 100 },
+        dataZoom: [{ type: 'slider' }],
+        series: [
+            { name: 'RSI', type: 'line', data: stockData.map(d => d.rsi), showSymbol: false, lineStyle: { color: '#7b1fa2' } },
+            { name: 'Overbought (70)', type: 'line', data: dates.map(() => 70), showSymbol: false, lineStyle: { type: 'dashed', color: '#e53935' } },
+            { name: 'Oversold (30)', type: 'line', data: dates.map(() => 30), showSymbol: false, lineStyle: { type: 'dashed', color: '#43a047' } }
+        ]
+    });
+    const volChart = echarts.init(document.getElementById('volumeChart'));
+    volChart.setOption({
+        tooltip: { trigger: 'axis' },
+        xAxis: { type: 'category', data: dates }, yAxis: { type: 'value' },
+        dataZoom: [{ type: 'slider' }],
+        series: [{ name: 'Volume', type: 'bar', data: stockData.map(d => d.volume), itemStyle: { color: '#1565c0' } }]
+    });
+}
+
+// ===== TAB 3: Prediction Comparison =====
+// Top half: average error and win-count per model across the held-out days.
+// Bottom half: 5-day recursive forecast (each model on its own rolling window).
+function renderPrediction() {
+    if (predData.length === 0) return;
+
+    // Part 1: Average performance across all test days
+    let lstmTotalErr = 0, rnnTotalErr = 0, gruTotalErr = 0, cnnTotalErr = 0, rfTotalErr = 0;
+    let lstmWinCount = 0, rnnWinCount = 0, gruWinCount = 0, cnnWinCount = 0, rfWinCount = 0;
+    predData.forEach(d => {
+        const a = parseFloat(d.actual);
+        const le = Math.abs(parseFloat(d.lstm_pred) - a);
+        const re = Math.abs(parseFloat(d.rnn_pred) - a);
+        const ge = Math.abs(parseFloat(d.gru_pred) - a);
+        const ce = Math.abs(parseFloat(d.cnn_pred) - a);
+        const fe = Math.abs(parseFloat(d.rf_pred) - a);
+        lstmTotalErr += le; rnnTotalErr += re; gruTotalErr += ge; cnnTotalErr += ce; rfTotalErr += fe;
+        const minErr = Math.min(le, re, ge, ce, fe);
+        if (le === minErr) lstmWinCount++;
+        else if (re === minErr) rnnWinCount++;
+        else if (ge === minErr) gruWinCount++;
+        else if (ce === minErr) cnnWinCount++;
+        else rfWinCount++;
+    });
+    const n = predData.length;
+    const lstmAvgErr = lstmTotalErr / n;
+    const rnnAvgErr = rnnTotalErr / n;
+    const gruAvgErr = gruTotalErr / n;
+    const cnnAvgErr = cnnTotalErr / n;
+    const rfAvgErr = rfTotalErr / n;
+
+    document.getElementById('latestTitle').textContent = currentTicker + ' - Average Prediction Performance (' + n + ' test days)';
+    document.getElementById('predDate').textContent = 'Test period: ' + predData[0].date + ' to ' + predData[n-1].date;
+    document.getElementById('actualVal').textContent = n + ' days';
+    document.getElementById('lstmVal').textContent = lstmAvgErr.toFixed(6);
+    document.getElementById('rnnVal').textContent = rnnAvgErr.toFixed(6);
+    document.getElementById('gruVal').textContent = gruAvgErr.toFixed(6);
+    document.getElementById('cnnVal').textContent = cnnAvgErr.toFixed(6);
+    document.getElementById('rfVal').textContent = rfAvgErr.toFixed(6);
+    document.getElementById('lstmErr').textContent = 'Wins ' + lstmWinCount + '/' + n + ' days (' + (lstmWinCount/n*100).toFixed(1) + '%)';
+    document.getElementById('rnnErr').textContent = 'Wins ' + rnnWinCount + '/' + n + ' days (' + (rnnWinCount/n*100).toFixed(1) + '%)';
+    document.getElementById('gruErr').textContent = 'Wins ' + gruWinCount + '/' + n + ' days (' + (gruWinCount/n*100).toFixed(1) + '%)';
+    document.getElementById('cnnErr').textContent = 'Wins ' + cnnWinCount + '/' + n + ' days (' + (cnnWinCount/n*100).toFixed(1) + '%)';
+    document.getElementById('rfErr').textContent = 'Wins ' + rfWinCount + '/' + n + ' days (' + (rfWinCount/n*100).toFixed(1) + '%)';
+
+    const barChart = echarts.init(document.getElementById('latestBarChart'));
+    barChart.setOption({
+        title: { text: currentTicker + ' - Average MAE Across ' + n + ' Test Days', left: 'center', textStyle: { fontSize: 14 } },
+        tooltip: { trigger: 'axis' },
+        xAxis: { type: 'category', data: ['LSTM', 'RNN', 'GRU', 'CNN', 'Random Forest'] },
+        yAxis: { type: 'value', name: 'Average MAE' },
+        series: [{
+            type: 'bar', barWidth: '50%',
+            data: [
+                { value: parseFloat(lstmAvgErr.toFixed(6)), itemStyle: { color: '#2196F3' } },
+                { value: parseFloat(rnnAvgErr.toFixed(6)), itemStyle: { color: '#F44336' } },
+                { value: parseFloat(gruAvgErr.toFixed(6)), itemStyle: { color: '#9C27B0' } },
+                { value: parseFloat(cnnAvgErr.toFixed(6)), itemStyle: { color: '#FF5722' } },
+                { value: parseFloat(rfAvgErr.toFixed(6)), itemStyle: { color: '#4CAF50' } }
+            ],
+            label: { show: true, position: 'top', formatter: function(p) { return p.value.toFixed(6); }, fontSize: 12 }
+        }]
+    });
+
+    // Part 2: 5-Day Future Forecast
+    if (forecastData && forecastData.length > 0) {
+        document.getElementById('forecastTitle').textContent = currentTicker + ' - 5-Day Future Forecast (Recursive Prediction)';
+        const days = forecastData.map(d => 'Day +' + d.day_ahead);
+        const fChart = echarts.init(document.getElementById('forecastChart'));
+        fChart.setOption({
+            tooltip: { trigger: 'axis' },
+            legend: { data: ['LSTM', 'RNN', 'GRU', 'CNN', 'Random Forest'] },
+            xAxis: { type: 'category', data: days },
+            yAxis: { type: 'value', scale: true, name: 'Predicted Normalized Price' },
+            series: [
+                { name: 'LSTM', type: 'line', data: forecastData.map(d => parseFloat(d.lstm_pred)), lineStyle: { width: 2, color: '#2196F3' }, symbol: 'circle', symbolSize: 8, itemStyle: { color: '#2196F3' } },
+                { name: 'RNN', type: 'line', data: forecastData.map(d => parseFloat(d.rnn_pred)), lineStyle: { width: 2, color: '#F44336' }, symbol: 'circle', symbolSize: 8, itemStyle: { color: '#F44336' } },
+                { name: 'GRU', type: 'line', data: forecastData.map(d => parseFloat(d.gru_pred)), lineStyle: { width: 2, color: '#9C27B0' }, symbol: 'circle', symbolSize: 8, itemStyle: { color: '#9C27B0' } },
+                { name: 'CNN', type: 'line', data: forecastData.map(d => parseFloat(d.cnn_pred)), lineStyle: { width: 2, color: '#FF5722' }, symbol: 'circle', symbolSize: 8, itemStyle: { color: '#FF5722' } },
+                { name: 'Random Forest', type: 'line', data: forecastData.map(d => parseFloat(d.rf_pred)), lineStyle: { width: 2, color: '#4CAF50' }, symbol: 'circle', symbolSize: 8, itemStyle: { color: '#4CAF50' } }
+            ]
+        });
+
+        let tableHtml = '<table class="comparison-table"><tr><th>Day</th><th>LSTM</th><th>RNN</th><th>GRU</th><th>CNN</th><th>RF</th></tr>';
+        forecastData.forEach(d => {
+            tableHtml += '<tr><td><strong>Day +' + d.day_ahead + '</strong></td><td style="color:#2196F3;">' + parseFloat(d.lstm_pred).toFixed(6) + '</td><td style="color:#F44336;">' + parseFloat(d.rnn_pred).toFixed(6) + '</td><td style="color:#9C27B0;">' + parseFloat(d.gru_pred).toFixed(6) + '</td><td style="color:#FF5722;">' + parseFloat(d.cnn_pred).toFixed(6) + '</td><td style="color:#4CAF50;">' + parseFloat(d.rf_pred).toFixed(6) + '</td></tr>';
+        });
+        const day5 = forecastData[forecastData.length - 1];
+        const l5 = parseFloat(day5.lstm_pred);
+        const r5 = parseFloat(day5.rnn_pred);
+        const g5 = parseFloat(day5.gru_pred);
+        const c5 = parseFloat(day5.cnn_pred);
+        const f5 = parseFloat(day5.rf_pred);
+        const maxDiff = Math.max(l5, r5, g5, c5, f5) - Math.min(l5, r5, g5, c5, f5);
+        tableHtml += '<tr><td><strong>Day 5 Spread</strong></td><td colspan="5" style="text-align:center;">' + maxDiff.toFixed(6) + ' (' + (maxDiff*100).toFixed(2) + '%)</td></tr>';
+        tableHtml += '</table>';
+        document.getElementById('forecastTable').innerHTML = tableHtml;
+    }
+
+    // Part 3: Full test period line chart
+    document.getElementById('predTitle').textContent = currentTicker + ' - Full Test Period Prediction vs Actual';
+    const dates = predData.map(d => d.date);
+    const chart = echarts.init(document.getElementById('predChart'));
+    chart.setOption({
+        tooltip: { trigger: 'axis' },
+        legend: { data: ['Actual', 'LSTM', 'RNN', 'GRU', 'CNN', 'Random Forest'] },
+        xAxis: { type: 'category', data: dates },
+        yAxis: { type: 'value', scale: true, name: 'Normalized Price' },
+        dataZoom: [{ type: 'slider' }],
+        series: [
+            { name: 'Actual', type: 'line', data: predData.map(d => d.actual), lineStyle: { width: 2, color: '#000' }, showSymbol: false },
+            { name: 'LSTM', type: 'line', data: predData.map(d => d.lstm_pred), lineStyle: { width: 1.5, color: '#2196F3' }, showSymbol: false },
+            { name: 'RNN', type: 'line', data: predData.map(d => d.rnn_pred), lineStyle: { width: 1.5, color: '#F44336' }, showSymbol: false },
+            { name: 'GRU', type: 'line', data: predData.map(d => d.gru_pred), lineStyle: { width: 1.5, color: '#9C27B0' }, showSymbol: false },
+            { name: 'CNN', type: 'line', data: predData.map(d => d.cnn_pred), lineStyle: { width: 1.5, color: '#FF5722' }, showSymbol: false },
+            { name: 'Random Forest', type: 'line', data: predData.map(d => d.rf_pred), lineStyle: { width: 1.5, color: '#4CAF50' }, showSymbol: false }
+        ]
+    });
+}
+
+// ===== TAB 4: Model Evaluation =====
+// Average RMSE per model, 4 loss-curve panels, RMSE bars per stock,
+// and the full per-stock comparison table at the bottom.
+function renderEvaluation() {
+    const grid = document.getElementById('metricsGrid');
+    const lstmAvg = modelResults.reduce((s, r) => s + (r.lstm_rmse_avg || 0), 0) / modelResults.length;
+    const rnnAvg = modelResults.reduce((s, r) => s + (r.rnn_rmse_avg || 0), 0) / modelResults.length;
+    const gruAvg = modelResults.reduce((s, r) => s + (r.gru_rmse_avg || 0), 0) / modelResults.length;
+    const cnnAvg = modelResults.reduce((s, r) => s + (r.cnn_rmse_avg || 0), 0) / modelResults.length;
+    const rfAvg = modelResults.reduce((s, r) => s + (r.rf_rmse || 0), 0) / modelResults.length;
+    const lstmWins = modelResults.filter(r => r.winner === 'LSTM').length;
+    const gruWins = modelResults.filter(r => r.winner === 'GRU').length;
+    grid.innerHTML = '<div class="metric-card"><div class="value">' + lstmAvg.toFixed(4) + '</div><div class="label">LSTM Avg RMSE</div></div>' +
+        '<div class="metric-card"><div class="value">' + rnnAvg.toFixed(4) + '</div><div class="label">RNN Avg RMSE</div></div>' +
+        '<div class="metric-card"><div class="value">' + gruAvg.toFixed(4) + '</div><div class="label">GRU Avg RMSE</div></div>' +
+        '<div class="metric-card"><div class="value">' + cnnAvg.toFixed(4) + '</div><div class="label">CNN Avg RMSE</div></div>' +
+        '<div class="metric-card"><div class="value">' + rfAvg.toFixed(4) + '</div><div class="label">RF Avg RMSE</div></div>' +
+        '<div class="metric-card"><div class="value">' + lstmWins + '/10</div><div class="label">LSTM Wins</div></div>';
+
+    // Render loss curves
+    function renderLossChart(elId, modelName, trainColor) {
+        const el = document.getElementById(elId);
+        if (!el || !lossHistory[modelName]) return;
+        const chart = echarts.init(el);
+        const trainData = lossHistory[modelName].train;
+        const valData = lossHistory[modelName].val;
+        const epochs = trainData.map((_, i) => i + 1);
+        chart.setOption({
+            tooltip: { trigger: 'axis' },
+            legend: { data: ['Training Loss', 'Validation Loss'] },
+            xAxis: { type: 'category', data: epochs, name: 'Epoch' },
+            yAxis: { type: 'value', name: 'Loss (MSE)', scale: true },
+            grid: { left: '12%', right: '5%', bottom: '15%' },
+            series: [
+                { name: 'Training Loss', type: 'line', data: trainData, lineStyle: { width: 2, color: trainColor }, showSymbol: false, itemStyle: { color: trainColor } },
+                { name: 'Validation Loss', type: 'line', data: valData, lineStyle: { width: 2, color: '#FF9800', type: 'dashed' }, showSymbol: false, itemStyle: { color: '#FF9800' } }
+            ]
+        });
+    }
+    renderLossChart('lossLstmChart', 'LSTM', '#2196F3');
+    renderLossChart('lossRnnChart', 'RNN', '#F44336');
+    renderLossChart('lossGruChart', 'GRU', '#9C27B0');
+    renderLossChart('lossCnnChart', 'CNN', '#FF5722');
+
+    const rmseChart = echarts.init(document.getElementById('rmseChart'));
+    rmseChart.setOption({
+        tooltip: { trigger: 'axis' },
+        legend: { data: ['LSTM', 'RNN', 'GRU', 'CNN', 'Random Forest'] },
+        xAxis: { type: 'category', data: modelResults.map(r => r.ticker) },
+        yAxis: { type: 'value', name: 'RMSE' },
+        series: [
+            { name: 'LSTM', type: 'bar', data: modelResults.map(r => r.lstm_rmse_avg || r.lstm_rmse_best), itemStyle: { color: '#2196F3' } },
+            { name: 'RNN', type: 'bar', data: modelResults.map(r => r.rnn_rmse_avg || r.rnn_rmse_best), itemStyle: { color: '#F44336' } },
+            { name: 'GRU', type: 'bar', data: modelResults.map(r => r.gru_rmse_avg || r.gru_rmse_best), itemStyle: { color: '#9C27B0' } },
+            { name: 'CNN', type: 'bar', data: modelResults.map(r => r.cnn_rmse_avg || r.cnn_rmse_best), itemStyle: { color: '#FF5722' } },
+            { name: 'Random Forest', type: 'bar', data: modelResults.map(r => r.rf_rmse), itemStyle: { color: '#4CAF50' } }
+        ]
+    });
+
+    const table = document.getElementById('comparisonTable');
+    let html = '<tr><th>Stock</th><th>LSTM RMSE</th><th>RNN RMSE</th><th>GRU RMSE</th><th>CNN RMSE</th><th>RF RMSE</th><th>Winner</th></tr>';
+    modelResults.forEach(r => {
+        const lstmR = r.lstm_rmse_avg || r.lstm_rmse_best;
+        const rnnR = r.rnn_rmse_avg || r.rnn_rmse_best;
+        const gruR = r.gru_rmse_avg || r.gru_rmse_best || '-';
+        const cnnR = r.cnn_rmse_avg || r.cnn_rmse_best || '-';
+        html += '<tr><td><strong>' + r.ticker + '</strong></td><td>' + (typeof lstmR === 'number' ? lstmR.toFixed(6) : lstmR) + '</td><td>' + (typeof rnnR === 'number' ? rnnR.toFixed(6) : rnnR) + '</td><td>' + (typeof gruR === 'number' ? gruR.toFixed(6) : gruR) + '</td><td>' + (typeof cnnR === 'number' ? cnnR.toFixed(6) : cnnR) + '</td><td>' + r.rf_rmse.toFixed(6) + '</td><td class="winner">' + r.winner + '</td></tr>';
+    });
+    table.innerHTML = html;
+}
+
+init();
+</script>
+</body>
+</html>

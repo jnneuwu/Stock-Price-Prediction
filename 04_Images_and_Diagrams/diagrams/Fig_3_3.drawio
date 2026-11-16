@@ -1,0 +1,66 @@
+<mxfile host="app.diagrams.net" version="22.0.0">
+  <diagram name="Sliding Window" id="sw">
+    <mxGraphModel dx="1400" dy="800" grid="1" gridSize="10" pageWidth="1300" pageHeight="500">
+      <root>
+        <mxCell id="0" /><mxCell id="1" parent="0" />
+
+        <mxCell id="t" value="Fig 3.3  Sliding Window Construction (W = 20)" style="text;html=1;align=center;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="350" y="10" width="600" height="30" as="geometry" /></mxCell>
+
+        <mxCell id="axis" value="Time axis (trading days)  -&gt;" style="text;html=1;align=center;fontSize=11;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="350" y="50" width="600" height="20" as="geometry" /></mxCell>
+
+        <mxCell id="d1"  value="1"  style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="200" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d2"  value="2"  style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="235" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d3"  value="3"  style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="270" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d4"  value="4"  style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="305" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d5"  value="5"  style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="340" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d6"  value="6"  style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="375" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d7"  value="7"  style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="410" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d8"  value="8"  style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="445" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d9"  value="9"  style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="480" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d10" value="10" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="515" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d11" value="11" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="550" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d12" value="12" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="585" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d13" value="13" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="620" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d14" value="14" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="655" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d15" value="15" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="690" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d16" value="16" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="725" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d17" value="17" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="760" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d18" value="18" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="795" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d19" value="19" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="830" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d20" value="20" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="865" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d21" value="21" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFCDD2;strokeColor=#C62828;fontSize=10;fontStyle=1" vertex="1" parent="1"><mxGeometry x="900" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d22" value="22" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFCDD2;fontSize=10" vertex="1" parent="1"><mxGeometry x="935" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d23" value="23" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFCDD2;fontSize=10" vertex="1" parent="1"><mxGeometry x="970" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d24" value="24" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="1005" y="80" width="35" height="35" as="geometry" /></mxCell>
+        <mxCell id="d25" value="25" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;fontSize=10" vertex="1" parent="1"><mxGeometry x="1040" y="80" width="35" height="35" as="geometry" /></mxCell>
+
+        <mxCell id="targetnote" value="(target days predicted by the windows)" style="text;html=1;align=center;fontSize=9;fontStyle=2;fontColor=#C62828" vertex="1" parent="1">
+          <mxGeometry x="900" y="120" width="200" height="18" as="geometry" /></mxCell>
+
+        <mxCell id="lbl1" value="Window 1  (Day 1 - 20)  -&gt;  predict Day 21" style="text;html=1;align=right;fontSize=11;fontStyle=1;fontColor=#0D47A1" vertex="1" parent="1">
+          <mxGeometry x="15" y="172" width="180" height="26" as="geometry" /></mxCell>
+        <mxCell id="w1box" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#0D47A1;strokeWidth=3" vertex="1" parent="1">
+          <mxGeometry x="200" y="170" width="700" height="30" as="geometry" /></mxCell>
+
+        <mxCell id="lbl2" value="Window 2  (Day 2 - 21)  -&gt;  predict Day 22" style="text;html=1;align=right;fontSize=11;fontStyle=1;fontColor=#1B5E20" vertex="1" parent="1">
+          <mxGeometry x="15" y="222" width="180" height="26" as="geometry" /></mxCell>
+        <mxCell id="w2box" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#1B5E20;strokeWidth=3" vertex="1" parent="1">
+          <mxGeometry x="235" y="220" width="700" height="30" as="geometry" /></mxCell>
+
+        <mxCell id="lbl3" value="Window 3  (Day 3 - 22)  -&gt;  predict Day 23" style="text;html=1;align=right;fontSize=11;fontStyle=1;fontColor=#E65100" vertex="1" parent="1">
+          <mxGeometry x="15" y="272" width="180" height="26" as="geometry" /></mxCell>
+        <mxCell id="w3box" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#E65100;strokeWidth=3" vertex="1" parent="1">
+          <mxGeometry x="270" y="270" width="700" height="30" as="geometry" /></mxCell>
+
+        <mxCell id="slide" value="... window slides forward one day at a time ..." style="text;html=1;align=center;fontSize=11;fontStyle=2;fontColor=#666666" vertex="1" parent="1">
+          <mxGeometry x="350" y="320" width="600" height="20" as="geometry" /></mxCell>
+
+        <mxCell id="sample" value="Each sample:  X shape (20, 10)   -&gt;   y = next day's close_norm" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="350" y="360" width="600" height="40" as="geometry" /></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

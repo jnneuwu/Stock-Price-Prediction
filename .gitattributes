@@ -1,0 +1,22 @@
+# Auto-detect text files, normalize line endings
+* text=auto
+
+# Force LF for Python and config files
+*.py text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.html text eol=lf
+*.sql text eol=lf
+
+# Mark binaries so git doesn't try to diff them
+*.pdf binary
+*.docx binary
+*.pptx binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pth binary
+*.pkl binary
+*.zip binary
+*.drawio binary

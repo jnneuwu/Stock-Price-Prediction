@@ -1,0 +1,45 @@
+<mxfile host="app.diagrams.net" version="22.0.0">
+  <diagram name="Train-Test Split" id="split">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" pageWidth="1169" pageHeight="500">
+      <root>
+        <mxCell id="0" /><mxCell id="1" parent="0" />
+        <mxCell id="t" value="Fig 3.4  Chronological Train/Validation/Test Split" style="text;html=1;align=center;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="300" y="10" width="550" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="axis" value="←── Time (oldest to newest) ──→" style="text;html=1;align=center;fontSize=12;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="400" y="50" width="400" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="all" value="All Samples (N − 20, ≈ 1,230 per stock)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="80" y="90" width="1000" height="50" as="geometry" /></mxCell>
+        <mxCell id="sp1" value="" style="endArrow=none;strokeColor=#000;strokeWidth=2;dashed=1" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="880" y="80" /><mxPoint x="880" y="260" /></Array>
+            <mxPoint x="880" y="80" as="sourcePoint" />
+            <mxPoint x="880" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sp1lbl" value="80% / 20%" style="text;html=1;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="840" y="60" width="80" height="20" as="geometry" /></mxCell>
+        <mxCell id="train" value="Training Set (80%)&#10;≈ 984 samples" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#2E7D32;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="80" y="170" width="800" height="50" as="geometry" /></mxCell>
+        <mxCell id="test" value="Test Set (20%)&#10;≈ 246 samples&#10;(held out)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFCDD2;strokeColor=#C62828;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="880" y="170" width="200" height="50" as="geometry" /></mxCell>
+        <mxCell id="sp2" value="" style="endArrow=none;strokeColor=#1565C0;strokeWidth=2;dashed=1" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="720" y="160" /><mxPoint x="720" y="260" /></Array>
+            <mxPoint x="720" y="160" as="sourcePoint" />
+            <mxPoint x="720" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sp2lbl" value="internal 80/20 for validation" style="text;html=1;fontSize=10;fontStyle=1;fontColor=#1565C0" vertex="1" parent="1">
+          <mxGeometry x="600" y="150" width="200" height="20" as="geometry" /></mxCell>
+        <mxCell id="tr" value="Actual Training (≈ 787 samples)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#A5D6A7;strokeColor=#2E7D32;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="80" y="240" width="640" height="40" as="geometry" /></mxCell>
+        <mxCell id="val" value="Validation&#10;(≈ 197)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#1565C0;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="720" y="240" width="160" height="40" as="geometry" /></mxCell>
+        <mxCell id="info" value="Key rules:&#10;• No random shuffling — split is strictly by date (chronological)&#10;• Validation set comes from the END of the training window (most recent)&#10;• Test set is the most recent 20% and is NEVER seen during training&#10;• This avoids look-ahead bias (training on future data)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#6A1B9A;fontSize=11;align=left" vertex="1" parent="1">
+          <mxGeometry x="80" y="310" width="1000" height="100" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

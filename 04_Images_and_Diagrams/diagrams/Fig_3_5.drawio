@@ -1,0 +1,90 @@
+<mxfile host="app.diagrams.net" version="22.0.0">
+  <diagram name="Model Architectures" id="models">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" pageWidth="1400" pageHeight="820">
+      <root>
+        <mxCell id="0" /><mxCell id="1" parent="0" />
+        <mxCell id="t" value="Fig 3.5  Five Model Architectures (same input: 20 × 10)" style="text;html=1;align=center;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="10" width="600" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- ===== LSTM ===== -->
+        <mxCell id="lstm_box" value="LSTM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#1B5E20;strokeWidth=2;fontSize=14;fontStyle=1;verticalAlign=top" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="240" height="340" as="geometry" /></mxCell>
+        <mxCell id="lstm_in" value="Input&#10;(batch, 20, 10)" style="rounded=1;fillColor=#FFF9C4;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="60" y="90" width="200" height="40" as="geometry" /></mxCell>
+        <mxCell id="lstm_l1" value="LSTM Layer 1&#10;hidden=128, dropout=0.2" style="rounded=1;fillColor=#C8E6C9;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="60" y="150" width="200" height="50" as="geometry" /></mxCell>
+        <mxCell id="lstm_l2" value="LSTM Layer 2&#10;hidden=128" style="rounded=1;fillColor=#C8E6C9;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="60" y="210" width="200" height="50" as="geometry" /></mxCell>
+        <mxCell id="lstm_pick" value="Take last hidden state&#10;h_t=20 shape: (128,)" style="rounded=0;fillColor=#FFE0B2;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="60" y="270" width="200" height="40" as="geometry" /></mxCell>
+        <mxCell id="lstm_fc" value="FC Linear(128 → 1)" style="rounded=1;fillColor=#FFCDD2;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="60" y="320" width="200" height="40" as="geometry" /></mxCell>
+        <mxCell id="lstm_note" value="3 gates + cell state&#10;~200K params" style="text;html=1;fontSize=9;fontStyle=2;align=center" vertex="1" parent="1">
+          <mxGeometry x="60" y="365" width="200" height="30" as="geometry" /></mxCell>
+
+        <!-- ===== RNN ===== -->
+        <mxCell id="rnn_box" value="RNN (baseline)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#0D47A1;strokeWidth=2;fontSize=14;fontStyle=1;verticalAlign=top" vertex="1" parent="1">
+          <mxGeometry x="310" y="60" width="240" height="340" as="geometry" /></mxCell>
+        <mxCell id="rnn_in" value="Input&#10;(batch, 20, 10)" style="rounded=1;fillColor=#FFF9C4;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="330" y="90" width="200" height="40" as="geometry" /></mxCell>
+        <mxCell id="rnn_l1" value="RNN Layer 1 (tanh)&#10;hidden=128, dropout=0.2" style="rounded=1;fillColor=#BBDEFB;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="330" y="150" width="200" height="50" as="geometry" /></mxCell>
+        <mxCell id="rnn_l2" value="RNN Layer 2 (tanh)&#10;hidden=128" style="rounded=1;fillColor=#BBDEFB;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="330" y="210" width="200" height="50" as="geometry" /></mxCell>
+        <mxCell id="rnn_pick" value="Take last hidden state" style="rounded=0;fillColor=#FFE0B2;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="330" y="270" width="200" height="40" as="geometry" /></mxCell>
+        <mxCell id="rnn_fc" value="FC Linear(128 → 1)" style="rounded=1;fillColor=#FFCDD2;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="330" y="320" width="200" height="40" as="geometry" /></mxCell>
+        <mxCell id="rnn_note" value="No gating → vanishing gradient&#10;~100K params" style="text;html=1;fontSize=9;fontStyle=2;align=center" vertex="1" parent="1">
+          <mxGeometry x="330" y="365" width="200" height="30" as="geometry" /></mxCell>
+
+        <!-- ===== GRU ===== -->
+        <mxCell id="gru_box" value="GRU" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#6A1B9A;strokeWidth=2;fontSize=14;fontStyle=1;verticalAlign=top" vertex="1" parent="1">
+          <mxGeometry x="580" y="60" width="240" height="340" as="geometry" /></mxCell>
+        <mxCell id="gru_in" value="Input&#10;(batch, 20, 10)" style="rounded=1;fillColor=#FFF9C4;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="600" y="90" width="200" height="40" as="geometry" /></mxCell>
+        <mxCell id="gru_l1" value="GRU Layer 1&#10;hidden=128, dropout=0.2" style="rounded=1;fillColor=#E1BEE7;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="600" y="150" width="200" height="50" as="geometry" /></mxCell>
+        <mxCell id="gru_l2" value="GRU Layer 2&#10;hidden=128" style="rounded=1;fillColor=#E1BEE7;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="600" y="210" width="200" height="50" as="geometry" /></mxCell>
+        <mxCell id="gru_pick" value="Take last hidden state" style="rounded=0;fillColor=#FFE0B2;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="600" y="270" width="200" height="40" as="geometry" /></mxCell>
+        <mxCell id="gru_fc" value="FC Linear(128 → 1)" style="rounded=1;fillColor=#FFCDD2;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="600" y="320" width="200" height="40" as="geometry" /></mxCell>
+        <mxCell id="gru_note" value="2 gates (update + reset)&#10;~150K params (~25% fewer)" style="text;html=1;fontSize=9;fontStyle=2;align=center" vertex="1" parent="1">
+          <mxGeometry x="600" y="365" width="200" height="30" as="geometry" /></mxCell>
+
+        <!-- ===== CNN ===== -->
+        <mxCell id="cnn_box" value="1D-CNN" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#E65100;strokeWidth=2;fontSize=14;fontStyle=1;verticalAlign=top" vertex="1" parent="1">
+          <mxGeometry x="40" y="430" width="500" height="340" as="geometry" /></mxCell>
+        <mxCell id="cnn_in" value="Input (batch, 20, 10)" style="rounded=1;fillColor=#FFF9C4;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="60" y="460" width="460" height="40" as="geometry" /></mxCell>
+        <mxCell id="cnn_perm" value="Permute → (batch, 10, 20)&#10;(Conv1d expects channels BEFORE length)" style="rounded=0;fillColor=#FFE0B2;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="60" y="510" width="460" height="50" as="geometry" /></mxCell>
+        <mxCell id="cnn_c1" value="Conv1d(10→64, kernel=3) + ReLU" style="rounded=1;fillColor=#FFCC80;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="60" y="570" width="220" height="50" as="geometry" /></mxCell>
+        <mxCell id="cnn_c2" value="Conv1d(64→32, kernel=3) + ReLU" style="rounded=1;fillColor=#FFCC80;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="300" y="570" width="220" height="50" as="geometry" /></mxCell>
+        <mxCell id="cnn_flat" value="Flatten + FC Linear → 1" style="rounded=1;fillColor=#FFCDD2;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="60" y="640" width="460" height="50" as="geometry" /></mxCell>
+        <mxCell id="cnn_note" value="Detects local patterns (3-day motifs): ~30K params — smallest model" style="text;html=1;fontSize=9;fontStyle=2;align=center" vertex="1" parent="1">
+          <mxGeometry x="60" y="700" width="460" height="30" as="geometry" /></mxCell>
+
+        <!-- ===== RF ===== -->
+        <mxCell id="rf_box" value="Random Forest (non-sequential baseline)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#B71C1C;strokeWidth=2;fontSize=14;fontStyle=1;verticalAlign=top" vertex="1" parent="1">
+          <mxGeometry x="580" y="430" width="500" height="340" as="geometry" /></mxCell>
+        <mxCell id="rf_in" value="Input (batch, 20, 10)" style="rounded=1;fillColor=#FFF9C4;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="600" y="460" width="460" height="40" as="geometry" /></mxCell>
+        <mxCell id="rf_flat" value="FLATTEN → (batch, 200)&#10;⚠ temporal order lost" style="rounded=0;fillColor=#EF9A9A;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="600" y="510" width="460" height="50" as="geometry" /></mxCell>
+        <mxCell id="rf_trees" value="100 Decision Trees (scikit-learn)&#10;each tree: random feature &amp; sample subset" style="rounded=1;fillColor=#FFCDD2;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="600" y="570" width="460" height="60" as="geometry" /></mxCell>
+        <mxCell id="rf_avg" value="Average predictions across 100 trees → scalar output" style="rounded=1;fillColor=#EF9A9A;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="600" y="640" width="460" height="50" as="geometry" /></mxCell>
+        <mxCell id="rf_note" value="Non-temporal baseline to quantify value of sequential modeling" style="text;html=1;fontSize=9;fontStyle=2;align=center" vertex="1" parent="1">
+          <mxGeometry x="600" y="700" width="460" height="30" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,22 @@
+# Stock Price Prediction
+# Mingyu Yang 3184344
+# pip install -r requirements.txt
+
+# Deep learning
+torch==2.5.0
+
+# Data handling
+numpy==1.26.4
+pandas==2.2.2
+
+# Machine learning
+scikit-learn==1.5.1
+
+# Stock data download
+yfinance==1.2.0
+
+# Database
+mysql-connector-python==9.6.0
+
+# Web application
+flask==3.1.3

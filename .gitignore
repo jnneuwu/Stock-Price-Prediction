@@ -1,0 +1,25 @@
+# Ignore everything by default
+*
+
+# Allow the five submission folders and their contents
+!01_Dissertation/
+!02_Source_Code/
+!03_Data/
+!04_Images_and_Diagrams/
+!05_Presentation/
+!01_Dissertation/**
+!02_Source_Code/**
+!03_Data/**
+!04_Images_and_Diagrams/**
+!05_Presentation/**
+
+# Always allow these meta files
+!.gitignore
+!.gitattributes
+
+# Within the allowed folders, still ignore Python cache + scratch artefacts
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+.DS_Store
+Thumbs.db
